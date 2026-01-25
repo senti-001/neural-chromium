@@ -1,0 +1,13 @@
+source_set("agent_interface") {
+  sources = [
+    "frame_header.h",
+    "audio_header.h",
+    "agent_shared_memory.h",
+    "agent_shared_memory.cc",
+    "frame_header.h",
+  ]
+
+  deps = [
+    "//base",
+  ]
+}

@@ -1,0 +1,13 @@
+static_library("mcp") {
+  sources = [
+    "mcp_transport.h",
+    "stdio_transport.h",
+    "stdio_transport.cc",
+    "mcp_client.h",
+    "mcp_service.h",
+  ]
+
+  deps = [
+    "//base",
+  ]
+}
