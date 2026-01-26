@@ -1,0 +1,54 @@
+{
+  "Task 1: Auth + Data Extraction": {
+    "neural": {
+      "avg_time": 3.3015475273132324,
+      "success_rate": 100.0,
+      "avg_retries": 0,
+      "avg_tool_calls": 2,
+      "failure_modes": []
+    },
+    "playwright": {
+      "avg_time": 1.0799947023391723,
+      "success_rate": 100.0,
+      "avg_retries": 0,
+      "avg_tool_calls": 7,
+      "failure_modes": []
+    }
+  },
+  "Task 2: Dynamic SPA Interaction": {
+    "neural": {
+      "avg_time": -1,
+      "success_rate": 0.0,
+      "avg_retries": 0,
+      "avg_tool_calls": 14,
+      "failure_modes": [
+        "Active: ['Task 2', 'Task 1', 'Task 3'] (Expected Task 3 only)"
+      ]
+    },
+    "playwright": {
+      "avg_time": 1.2957234382629395,
+      "success_rate": 100.0,
+      "avg_retries": 0,
+      "avg_tool_calls": 11,
+      "failure_modes": []
+    }
+  },
+  "Task 3: Multi-Step Form + Validation": {
+    "neural": {
+      "avg_time": 4.7851890325546265,
+      "success_rate": 100.0,
+      "avg_retries": 0,
+      "avg_tool_calls": 6,
+      "failure_modes": []
+    },
+    "playwright": {
+      "avg_time": -1,
+      "success_rate": 0.0,
+      "avg_retries": 0,
+      "avg_tool_calls": 5,
+      "failure_modes": [
+        "No confirmation"
+      ]
+    }
+  }
+}
