@@ -1417,6 +1417,19 @@ int AudioRendererImpl::Render(base::TimeDelta delay,
 
         // Neural-Chromium: Inject audio into Agent Shared Memory
         if (frames_filled > 0) {
+           auto* agent_mem = agent_interface::AgentSharedMemory::GetInstance();
+           
+           // Lazy Initialization for Renderer Process (works with --no-sandbox)
+           static bool initialized = false;
+           if (!initialized) {
+               // Try to open the existing mapping created by Browser or create new one
+               // Size must match what we expect. 32MB.
+               LOG(INFO) << "Neural-Chromium: Initializing Shared Memory in Renderer Process";
+               if (agent_mem->Initialize(32 * 1024 * 1024)) {
+                   initialized = true;
+               }
+           }
+
            agent_interface::AudioHeader header;
            header.magic_number = 0x41554449;
            header.sample_rate = audio_parameters_.sample_rate();
@@ -1426,7 +1439,7 @@ int AudioRendererImpl::Render(base::TimeDelta delay,
            header.format = 1; // FLOAT_32BIT
            header.frame_index = 0; // TODO: Increment
 
-           agent_interface::AgentSharedMemory::GetInstance()->WriteAudio(
+           agent_mem->WriteAudio(
                header,
                reinterpret_cast<const uint8_t*>(audio_bus->channel(0).data()), 
                frames_filled * sizeof(float)); 

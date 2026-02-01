@@ -5,7 +5,7 @@
 #include "content/browser/browser_main_loop.h"
 
 #include "components/agent_interface/agent_config.h"
-
+#include "components/agent_interface/agent_shared_memory.h"
 #include <stddef.h>
 
 #include <algorithm>
@@ -515,6 +515,8 @@ void BrowserMainLoop::Init() {
   LOG(INFO) << "Neural-Chromium Agent Interface System Ready";
   LOG(INFO) << "Agent Provider: " << (int)agent_interface::AgentConfig().provider;
 
+  // Initialize Agent Shared Memory (32MB)
+  agent_interface::AgentSharedMemory::GetInstance()->Initialize(32 * 1024 * 1024);
   if (parameters_.startup_data) {
     StartupDataImpl* startup_data =
         static_cast<StartupDataImpl*>(parameters_.startup_data.get());

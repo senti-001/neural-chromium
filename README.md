@@ -41,7 +41,7 @@ Neural-Chromium is a **custom Chromium build** that exposes the browser's intern
 |--------|-----------------|------------|
 | **Interaction Latency** | **1.32s** | ~0.5s (but brittle) |
 | **Selector Robustness** | **High** (semantic) | Low (CSS/XPath) |
-| **CAPTCHA Handling** | **Native** | Detectable |
+| **CAPTCHA Handling** | **Experimental (VLM)** | Detectable |
 | **Iframe Access** | **Deep traversal** | Context switching |
 
 ### ✅ VLM Integration
@@ -90,7 +90,7 @@ Neural-Chromium is a **custom Chromium build** that exposes the browser's intern
 - ✅ 1.32s average interaction latency
 - ✅ 60+ FPS visual cortex processing
 - ✅ 800+ DOM nodes traversed per observation
-- ✅ VLM-powered CAPTCHA solving with 90% confidence
+- 🚧 VLM-powered CAPTCHA solving (In Progress)
 
 ---
 
@@ -222,7 +222,7 @@ client.act(AgentAction(click=action_pb2.ClickAction(
 
 | Tool | Latency | Reliability |
 |------|---------|-------------|
-| Neural-Chromium | **1.32s** | ✅ 100% |
+| Neural-Chromium | **1.32s** | ✅ 99% |
 | Playwright | 0.5s | ⚠️ Brittle selectors |
 | Selenium | 1-2s | ❌ Detectable |
 
@@ -244,7 +244,7 @@ We benchmark against real-world automation scenarios that break traditional tool
 
 | System | Avg Time | Success Rate | Steps | Notes |
 |--------|----------|--------------|-------|-------|
-| **Neural-Chromium** | **~50s** | ✅ **100%** | 12+ | Multi-turn VLM loop (Handles stairs, buses, etc.) |
+| **Neural-Chromium** | **~50s** | 🚧 **Experimental** | 12+ | Contingent on local VLM (Llama 3.2) performance |
 | Playwright | - | ❌ 0% | 2 | Blocked indefinitely |
 
 ### Task 2: Auth + Data Extraction

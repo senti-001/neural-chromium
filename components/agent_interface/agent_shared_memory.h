@@ -4,6 +4,7 @@
 #include <memory>
 #include <string>
 
+#include "base/memory/raw_ptr.h"
 #include "base/memory/read_only_shared_memory_region.h"
 #include "base/memory/shared_memory_mapping.h"
 #include "components/agent_interface/agent_config.h"
@@ -30,17 +31,16 @@ class AgentSharedMemory {
   // For now, let's assume we might need a separate method to initialize audio memory.
   bool InitializeAudio(size_t size);
   void WriteAudio(const AudioHeader& header, const uint8_t* data, size_t data_size);
-  const base::ReadOnlySharedMemoryRegion& GetAudioRegion() const { return audio_region_; }
+
 
   // Get the READ-ONLY shared memory region to pass to the agent process.
-  const base::ReadOnlySharedMemoryRegion& GetRegion() const { return region_; }
+  // const base::ReadOnlySharedMemoryRegion& GetRegion() const { return region_; }
 
  private:
-  base::ReadOnlySharedMemoryRegion region_;
-  base::WritableSharedMemoryMapping mapping_;
-
-  base::ReadOnlySharedMemoryRegion audio_region_;
-  base::WritableSharedMemoryMapping audio_mapping_;
+  raw_ptr<void> buffer_ = nullptr;
+  raw_ptr<void> audio_buffer_ = nullptr;
+  raw_ptr<void> map_handle_ = nullptr;
+  size_t size_ = 0;
 };
 
 }  // namespace agent_interface

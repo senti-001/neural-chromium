@@ -5,7 +5,6 @@
 #include "components/viz/service/display/display.h"
 
 #include "components/agent_interface/agent_shared_memory.h"
-
 #include <stddef.h>
 
 #include <algorithm>
@@ -888,7 +887,6 @@ bool Display::DrawAndSwap(const DrawAndSwapParams& params) {
         agent->WriteFrame(header, nullptr, 0); // Header only for first pass
     }
   }
-
   DebugDrawFrame(frame, resource_provider_);
 
   if (frame.delegated_ink_metadata) {
