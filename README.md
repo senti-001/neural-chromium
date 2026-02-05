@@ -24,7 +24,7 @@ Neural-Chromium is a **custom Chromium build** that exposes the browser's intern
 
 ---
 
-## 🚀 What We've Built (Phase 3 Complete)
+## 🚀 What We've Built (Phase 6 Complete)
 
 ### ✅ Core Runtime
 - **In-Process gRPC Server** - Zero-copy state snapshots via shared memory
@@ -36,183 +36,30 @@ Neural-Chromium is a **custom Chromium build** that exposes the browser's intern
 - **`type(element_id, text)`** - Reliable input injection
 - **`observe()`** - Full DOM + accessibility tree snapshot
 
-### ✅ Benchmark & Demo
-| Metric | Neural-Chromium | Playwright |
-|--------|-----------------|------------|
-| **Interaction Latency** | **1.32s** | ~0.5s (but brittle) |
-| **Selector Robustness** | **High** (semantic) | Low (CSS/XPath) |
-| **CAPTCHA Handling** | **Experimental (VLM)** | Detectable |
-| **Iframe Access** | **Deep traversal** | Context switching |
-
-### ✅ VLM Integration
-- **Llama 3.2 Vision** via Ollama for visual reasoning
-- **Shared memory viewport capture** (zero-copy)
-- **Structured predictions** (JSON tile indices with confidence scores)
-- **Proof of concept**: Successfully analyzed reCAPTCHA challenges
-
----
-
-## 🏗️ Key Architectural Components
-
-### 1. Visual Cortex
-**Zero-copy access to the rendering pipeline (Viz) for sub-16ms inference latency.**
-
-- **PoC Validation**: Logs show frame processing at 60+ FPS during active interaction
-- **Significance**: Enables real-time visual understanding of the page state, including non-textual elements
-
-### 2. High-Precision Action
-**Coordinate transformation pipeline for mapping agent actions to internal browser events.**
-
-- **PoC Validation**: Logs show gRPC `Action Received` with specific actions like `CLICK → 869`
-- **Significance**: Allows precise, reliable interaction with any on-screen element, bypassing standard automation protocols
-
-### 3. Deep State Awareness
-**Direct access to the DOM and internal browser states.**
-
-- **PoC Validation**: Logs show traversal of 800+ DOM nodes with parent-child relationships
-- **Significance**: Provides contextual understanding beyond simple visual data, leading to robust decision-making
-
-### 4. Local Intelligence
-**Integration with local VLM (llama3.2-vision via Ollama) for privacy-first decision-making.**
-
-- **PoC Validation**: Agent successfully navigates complex flows autonomously with VLM-driven planning
-- **Significance**: Ensures privacy and adaptability by keeping decision-making on-device
-
----
-
-## 🎥 Demo Video
-
-[![Neural-Chromium Demo](https://img.youtube.com/vi/8nOlID7izjQ/maxresdefault.jpg)](https://youtube.com/shorts/8nOlID7izjQ)
-
-*Watch Neural-Chromium autonomously navigate SauceDemo, solve CAPTCHAs, and complete a full e-commerce checkout flow.*
-
-**Stats Confirmed in Video:**
-- ✅ 1.32s average interaction latency
-- ✅ 60+ FPS visual cortex processing
-- ✅ 800+ DOM nodes traversed per observation
-- 🚧 VLM-powered CAPTCHA solving (In Progress)
-
----
-
-## 🌐 Live Demo
-
-Try it yourself: **[neuralchrom-dtcvjx99.manus.space](https://neuralchrom-dtcvjx99.manus.space/#overview)**
-
----
-
-## 📁 Repository Structure
-
-```
-neural-chromium/
-├── src/
-│   ├── glazyr/
-│   │   ├── nexus_agent.py          # gRPC server + VisualCortex
-│   │   ├── proto/                  # Protocol Buffer definitions
-│   │   └── neural_page_handler.*   # Blink C++ integration
-│   ├── nexus_scenarios.py          # High-level agent client
-│   ├── vlm_solver.py               # Llama Vision integration
-│   └── demo_*.py                   # Example flows (login, CAPTCHA, etc.)
-├── docs/
-│   └── NEURAL_CHROMIUM_ARCHITECTURE.md     # Detailed System Design
-└── README.md                       # You are here
-```
-
----
-
-## 🛠️ Quick Start
-
-### Prerequisites
-- **Windows** (Linux/Mac support coming)
-- **Python 3.10+**
-- **Ollama** (for VLM features)
-- **16GB RAM** (for full build)
-
-### 1. Build Chromium
-```bash
-# Set up depot_tools
-git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
-set PATH=C:\path\to\depot_tools;%PATH%
-
-# Sync and build (takes ~4 hours on first run)
-cd src
-gclient sync
-gn gen out/Default
-ninja -C out/Default chrome
-```
-
-### 2. Run the Agent
-```bash
-# Terminal 1: Start Neural-Chromium
-out\Default\chrome.exe --remote-debugging-port=9222
-
-# Terminal 2: Start gRPC agent
-python src/glazyr/nexus_agent.py
-
-# Terminal 3: Run a demo
-python src/demo_saucedemo_login.py
-```
-
-### 3. Try VLM CAPTCHA Solving
-```bash
-# Install Ollama and pull vision model
-ollama pull llama3.2-vision
-
-# Run CAPTCHA solver
-python src/vlm_captcha_solve.py
-```
-
----
-
-## 🎬 Demo: SauceDemo E-Commerce Flow
-
-```python
-from nexus_scenarios import AgentClient, AgentAction
-import action_pb2
-
-client = AgentClient()
-client.navigate("https://www.saucedemo.com")
-
-# Find elements semantically (no CSS selectors!)
-state = client.observe()
-user_field = find(state, role="textbox", name="Username")
-pass_field = find(state, role="textbox", name="Password")
-login_btn = find(state, role="button", name="Login")
-
-# Perform actions
-client.act(AgentAction(type=action_pb2.TypeAction(
-    element_id=user_field.id, text="standard_user"
-)))
-client.act(AgentAction(type=action_pb2.TypeAction(
-    element_id=pass_field.id, text="secret_sauce"
-)))
-client.act(AgentAction(click=action_pb2.ClickAction(
-    element_id=login_btn.id
-)))
-```
-
-**Result**: Logged in successfully, added items to cart, completed checkout.
+### ✅ Local Intelligence (New in Phase 6)
+- **Ollama Integration** - Native support for `llama3` and `mistral` for complex reasoning.
+- **Visual Grounding** - `moondream` VLM integration for "Click [Description]" actions (0-1000 coordinate mapping).
+- **Plan Execution** - Auto-fallback for complex tasks ("Plan a trip" -> Google Search).
 
 ---
 
 ## 🗺️ Roadmap
 
-### Phase 4: Production Hardening (Next)
-- [ ] **Delta Updates** - Only send changed DOM nodes (reduce latency to <500ms)
-- [ ] **Push-based Events** - Replace polling with `wait_for_signal`
-- [ ] **Shadow DOM Piercing** - Enhanced CDP integration for modern SPAs
-- [ ] **Multi-tab Support** - Parallel agent execution
-- [ ] **Linux/Mac Builds** - Cross-platform support
+### Phase 7: Production Polish (Current)
+- [ ] **Architecture Cleanup** - Formalize Shared Memory contracts.
+- [ ] **UI Feedback** - Visual "Thinking" indicators in Omnibox.
+- [ ] **Persistence** - Session serialization for long-term memory.
 
-### Phase 5: Advanced Vision
-- [ ] **OCR Integration** - Text extraction from images
-- [ ] **Visual Grounding** - Click coordinates from natural language
-- [ ] **Screen Diffing** - Detect visual changes for verification
+### Completed Phases
+- [x] **Phase 1-3**: Core Runtime, State, Actions.
+- [x] **Phase 4**: Audio/Video Persistence.
+- [x] **Phase 5**: Latency Optimization (<16ms loop).
+- [x] **Phase 6**: Advanced Reasoning & Visual Grounding.
 
-### Phase 6: Ecosystem
-- [ ] **Python SDK** - High-level API (`neural_chromium.Agent()`)
-- [ ] **Docker Images** - Containerized runtime
-- [ ] **Cloud Deployment** - Kubernetes operator
-- [ ] **Benchmarks Suite** - Standard test scenarios
+### Future
+- [ ] **Linux/Mac Builds**
+- [ ] **Multi-tab Support**
+- [ ] **Cloud Deployment**
 
 ---
 
