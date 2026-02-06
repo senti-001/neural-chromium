@@ -63,6 +63,7 @@ Neural-Chromium is a **custom Chromium build** that exposes the browser's intern
 **Coordinate transformation pipeline for mapping agent actions to internal browser events.**
 
 - **PoC Validation**: Logs show gRPC `Action Received` with specific actions like `CLICK → 869`
+- **Global Mapping**: Implements `ClientToScreen` coordinate transformation to handle window snapping and multi-monitor setups correctly.
 - **Significance**: Allows precise, reliable interaction with any on-screen element, bypassing standard automation protocols
 
 ### 3. Deep State Awareness
@@ -146,7 +147,7 @@ We benchmark against real-world automation scenarios that break traditional tool
 
 | System | Avg Time | Success Rate | Steps | Notes |
 |--------|----------|--------------|-------|-------|
-| **Neural-Chromium** | **~50s** | 🚧 **Experimental** | 12+ | Contingent on local VLM (Llama 3.2) performance |
+| **Neural-Chromium** | **~154s** | ✅ **Verified** | 12+ | Uses "Safety Bypass" prompts (e.g. "blue button") with GPT-4o |
 | Playwright | - | ❌ 0% | 2 | Blocked indefinitely |
 
 ### Task 2: Auth + Data Extraction
@@ -166,7 +167,7 @@ We benchmark against real-world automation scenarios that break traditional tool
 
 | System | Avg Time | Success Rate | Steps | Notes |
 |--------|----------|--------------|-------|-------|
-| **Neural-Chromium** | **9.4s** | ✅ **100%** | 12 | Deterministic async handling |
+| **Neural-Chromium** | **~94s** | ✅ **100%** | 12 | Reliable input dispatch (Enter key fix) |
 | Playwright | 3.2s | ⚠️ 60% | 8 | Race conditions on async DOM |
 | OpenAI Computer Use | ~45s | ❌ 30% | ~20 | Brittle visual-only feedback |
 

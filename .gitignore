@@ -1,0 +1,7 @@
+
+debug_click_*.png
+debug_audio.wav
+debug_frame.png
+
+.env
+*.log

@@ -35,7 +35,11 @@ echo   --no-first-run
 echo   --no-default-browser-check
 
 :: Launch
-start "Neural-Chromium" "%CHROME_BIN%" --remote-debugging-port=9222 --start-maximized --no-first-run --no-default-browser-check --disable-gpu --user-data-dir=C:\tmp\neural_chrome_profile
+start "Neural-Chromium" "%CHROME_BIN%" --remote-debugging-port=9222 --start-maximized --no-first-run --no-default-browser-check --disable-gpu --disable-gpu-compositing --enable-logging --v=1 --no-sandbox --user-data-dir=C:\tmp\neural_chrome_profile
+
+
+
+
 
 echo [Neural-Launcher] Browser Started.
 exit /b 0
